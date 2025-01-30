@@ -10,7 +10,9 @@ import {
   X,
   Edit,
   Trash2,
+  FileText,
 } from "lucide-react";
+import Invoice from "./Invoice";
 
 type Job = {
   id: string;
@@ -65,6 +67,7 @@ const Jobs = () => {
     scheduled_date: "",
     total_cost: 0,
   });
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchJobs();
@@ -564,6 +567,9 @@ const Jobs = () => {
                     Total Cost
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Invoice
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -609,6 +615,17 @@ const Jobs = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       ${job.total_cost?.toFixed(2) || "0.00"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {job.status === "completed" && (
+                        <button
+                          onClick={() => setSelectedJobId(job.id)}
+                          className="text-blue-600 hover:text-blue-800 flex items-center"
+                        >
+                          <FileText className="w-4 h-4 mr-1" />
+                          Invoice
+                        </button>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <div className="flex gap-2">
@@ -662,6 +679,10 @@ const Jobs = () => {
             </table>
           </div>
         </div>
+      )}
+
+      {selectedJobId && (
+        <Invoice jobId={selectedJobId} onClose={() => setSelectedJobId(null)} />
       )}
     </div>
   );
