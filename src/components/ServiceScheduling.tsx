@@ -111,11 +111,6 @@ const ServiceScheduling = () => {
     return jobs.filter((job) => isSameDay(new Date(job.scheduled_date), date));
   };
 
-  const timeSlots = [...Array(9)].map((_, i) => {
-    const hour = i + 9; // Start at 9 AM
-    return `${hour}:00`;
-  });
-
   return (
     <div className="p-6">
       {/* Calendar Navigation */}
@@ -145,8 +140,7 @@ const ServiceScheduling = () => {
         </div>
       ) : (
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="grid grid-cols-8 border-b">
-            <div className="p-4 font-semibold text-gray-500 border-r">Time</div>
+          <div className="grid grid-cols-7 border-b">
             {weekDays.map((day) => (
               <div
                 key={day.toISOString()}
@@ -160,49 +154,40 @@ const ServiceScheduling = () => {
             ))}
           </div>
 
-          <div className="divide-y">
-            {timeSlots.map((time) => (
-              <div key={time} className="grid grid-cols-8">
-                <div className="p-4 border-r text-sm text-gray-500">{time}</div>
-                {weekDays.map((day) => {
-                  const dayJobs = getJobsForDay(day);
-                  const timeJobs = dayJobs.filter(
-                    (job) =>
-                      format(new Date(job.scheduled_date), "HH:mm") === time
-                  );
+          <div className="grid grid-cols-7">
+            {weekDays.map((day) => {
+              const dayJobs = getJobsForDay(day);
 
-                  return (
+              return (
+                <div
+                  key={day.toISOString()}
+                  className="p-4 border-r last:border-r-0 min-h-[200px]"
+                >
+                  {dayJobs.map((job) => (
                     <div
-                      key={day.toISOString()}
-                      className="p-2 border-r last:border-r-0 min-h-[100px]"
+                      key={job.id}
+                      className="bg-blue-50 p-2 rounded-lg mb-2 text-sm hover:bg-blue-100 cursor-pointer"
                     >
-                      {timeJobs.map((job) => (
-                        <div
-                          key={job.id}
-                          className="bg-blue-50 p-2 rounded-lg mb-2 text-sm hover:bg-blue-100 cursor-pointer"
-                        >
-                          <div className="font-medium mb-1">
-                            {job.service.name}
-                          </div>
-                          <div className="flex items-center text-gray-600 text-xs mb-1">
-                            <Car className="w-3 h-3 mr-1" />
-                            {job.vehicle.make} {job.vehicle.model}
-                          </div>
-                          <div className="flex items-center text-gray-600 text-xs mb-1">
-                            <User className="w-3 h-3 mr-1" />
-                            Status: {job.status}
-                          </div>
-                          <div className="flex items-center text-gray-600 text-xs">
-                            <Wrench className="w-3 h-3 mr-1" />
-                            {job.mechanic.name}
-                          </div>
-                        </div>
-                      ))}
+                      <div className="font-medium mb-1">
+                        {job.service.name}
+                      </div>
+                      <div className="flex items-center text-gray-600 text-xs mb-1">
+                        <Car className="w-3 h-3 mr-1" />
+                        {job.vehicle.make} {job.vehicle.model}
+                      </div>
+                      <div className="flex items-center text-gray-600 text-xs mb-1">
+                        <User className="w-3 h-3 mr-1" />
+                        Status: {job.status}
+                      </div>
+                      <div className="flex items-center text-gray-600 text-xs">
+                        <Wrench className="w-3 h-3 mr-1" />
+                        {job.mechanic.name}
+                      </div>
                     </div>
-                  );
-                })}
-              </div>
-            ))}
+                  ))}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

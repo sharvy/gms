@@ -6,7 +6,7 @@ import Customers from "./components/Customers";
 import Vehicles from "./components/Vehicles";
 import Jobs from "./components/Jobs";
 import Mechanics from "./components/Mechanics";
-// import Parts from "./components/Parts";
+import Parts from "./components/Parts";
 import ServiceScheduling from "./components/ServiceScheduling";
 import Services from "./components/Services";
 function App() {
@@ -22,7 +22,7 @@ function App() {
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/mechanics" element={<Mechanics />} />
             <Route path="/services" element={<Services />} />
-            {/* <Route path="/parts" element={<Parts />} /> */}
+            <Route path="/parts" element={<Parts />} />
             <Route path="/schedule" element={<ServiceScheduling />} />
           </Routes>
         </div>
